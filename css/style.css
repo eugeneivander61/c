@@ -40,6 +40,17 @@ body{
   line-height:1.65;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  user-select:none;
+}
+input,textarea,select,button{
+  -webkit-user-select:auto;
+  user-select:auto;
+}
+input,textarea,select{
+  font-size:16px;
 }
 img,svg{display:block}
 a{color:inherit;text-decoration:none}
@@ -242,6 +253,50 @@ section{scroll-margin-top:calc(var(--nav-h) + 12px)}
   transition-delay:var(--d,0s);
 }
 .reveal.in-view{opacity:1;transform:none}
+
+/* ───────────── TEXT ANIMATIONS ───────────── */
+.text-reveal{
+  opacity:0;transform:translateY(1.2em);
+  transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);
+  transition-delay:var(--d,0s);
+}
+.reveal.in-view .text-reveal{opacity:1;transform:none}
+
+/* word-by-word */
+.word-reveal{display:inline-block;opacity:0;transform:translateY(1em) rotate(-2deg);
+  transition:opacity .5s var(--ease-out),transform .5s var(--ease-spring);
+  transition-delay:var(--dl,0s);
+  white-space:pre-wrap;
+}
+.reveal.in-view .word-reveal{opacity:1;transform:none}
+
+/* stagger children */
+.stagger > *{opacity:0;transform:translateY(24px);
+  transition:opacity .6s var(--ease-out),transform .6s var(--ease-out);
+}
+.reveal.in-view .stagger > *{opacity:1;transform:none}
+
+/* ───────────── HOVER/TAP ENHANCEMENTS ───────────── */
+@media (hover: hover) and (pointer: fine){
+  .gal-btn:hover .gal-ico{transform:scale(1.2) rotate(8deg);background:var(--green-700)}
+  .ach-card:hover .ach-ico{transform:scale(1.25) rotate(12deg)}
+  .eks-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-8px)}
+  .p-counter:hover{transform:translateY(-10px) scale(1.02)}
+  .kampus-card:hover .kampus-num{color:rgba(217,165,63,.25)}
+  .btn-primary:hover{transform:translateY(-3px) scale(1.02)}
+  .btn-ghost:hover{transform:translateY(-2px)}
+  .chip:hover{transform:translateY(-4px) scale(1.05)}
+}
+
+/* tap feedback for mobile */
+@media (hover: none) and (pointer: coarse){
+  .gal-btn:active{transform:scale(.98)}
+  .ach-card:active{transform:scale(.99)}
+  .eks-card:active{transform:scale(.99)}
+  .btn:active{transform:scale(.98)}
+  .chip:active{transform:scale(.97)}
+  .p-counter:active{transform:scale(.99)}
+}
 
 /* ─────────────────────────── HERO ─────────────────────────── */
 .hero{
@@ -696,29 +751,6 @@ body.loaded .hero-title .rise{transform:translateY(0)}
 .p-counter-gold .p-bar i{background:linear-gradient(90deg,var(--gold-dark),var(--gold-light))}
 .in-view .p-bar i{width:var(--w)}
 
-/* marquee */
-.marquee{
-  margin:70px 0 60px;
-  padding:20px 0;
-  border-top:1px dashed rgba(13,68,51,.25);
-  border-bottom:1px dashed rgba(13,68,51,.25);
-  overflow:hidden;
-  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
-}
-.marquee-track{
-  display:flex;align-items:center;gap:44px;width:max-content;
-  animation:marquee 52s linear infinite;
-}
-.marquee:hover .marquee-track{animation-play-state:paused}
-.marquee-track span{
-  font-family:var(--font-display);font-style:italic;font-weight:500;
-  font-size:clamp(1.05rem,2vw,1.45rem);color:var(--green-800);
-  white-space:nowrap;
-}
-.marquee-track i{color:var(--gold);font-style:normal;font-size:.9rem}
-@keyframes marquee{to{transform:translateX(-50%)}}
-
 /* filter */
 .filter-bar{
   display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
@@ -830,7 +862,7 @@ body.loaded .hero-title .rise{transform:translateY(0)}
 .galeri-slideshow .slide{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   opacity:0;filter:grayscale(.25);
-  transition:opacity 1.5s ease,filter 1.5s ease,transform 25s linear;
+  transition:opacity 180s ease,filter 180s ease,transform 300s linear;
   transform:scale(1);
 }
 .galeri-slideshow .slide.active{
@@ -872,7 +904,8 @@ body.loaded .hero-title .rise{transform:translateY(0)}
 .gal-tab em{font-style:normal;font-size:.72rem;font-weight:800;
   min-width:20px;padding:2px 7px;border-radius:99px;text-align:center;
   background:var(--sand);color:var(--green-800);
-  transition:background .3s,color .3s;}
+  transition:background .3s,color .3s;
+  margin-left:8px;}
 .gal-tab:hover{color:var(--green-800)}
 .gal-tab.active{color:var(--cream)}
 .gal-switch[data-gal="kegiatan"] .gal-tab.active{color:#fff}
@@ -880,7 +913,7 @@ body.loaded .hero-title .rise{transform:translateY(0)}
 
 /* grid galeri */
 .gal-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:80px;align-items:stretch;
 }
 .gal-item{
   opacity:0;transform:translateY(28px);
@@ -1062,7 +1095,7 @@ figcaption span{font-size:.8rem;color:var(--muted)}
   .prestasi-counters{grid-template-columns:1fr 1fr}
   .eks-stats{grid-template-columns:1fr 1fr;gap:14px}
   .eks-grid{grid-template-columns:1fr 1fr}
-  .gal-grid{grid-template-columns:1fr 1fr}
+  .gal-grid{grid-template-columns:1fr 1fr;gap:56px}
   .orn-1{width:124px}
   .orn-2{width:100px}
 }
@@ -1116,7 +1149,7 @@ figcaption span{font-size:.8rem;color:var(--muted)}
   .eks-tab{flex:1;justify-content:center;padding:12px 14px;font-size:.86rem}
   .eks-tab svg{display:none}
   .eks-chip{padding:9px 15px;font-size:.82rem}
-  .gal-grid{grid-template-columns:1fr;gap:16px}
+  .gal-grid{grid-template-columns:1fr;gap:32px}
   .gal-switch{width:100%}
   .gal-tab{flex:1;justify-content:center;padding:12px 14px;font-size:.86rem}
   .gal-tab svg{display:none}
@@ -1128,6 +1161,47 @@ figcaption span{font-size:.8rem;color:var(--muted)}
   #galLb .lb-prev{left:12px}
   #galLb .lb-next{right:12px}
   #galLb .lb-close{top:12px;right:12px;width:44px;height:44px}
+}
+
+@media (max-width:480px){
+  .section{padding:64px 0}
+  .hero-title{font-size:clamp(2.2rem,10vw,3.5rem)}
+  .hero-sub{font-size:.95rem}
+  .hero-chips{gap:8px}
+  .chip{padding:7px 14px;font-size:.78rem}
+  .btn{padding:14px 22px;font-size:.88rem}
+  .section-head h2{font-size:clamp(1.8rem,7vw,2.6rem)}
+  .section-desc{font-size:.95rem}
+  .prestasi-counters{grid-template-columns:1fr;gap:12px}
+  .p-counter{padding:18px 14px}
+  .p-num{font-size:clamp(1.8rem,6vw,2.4rem)}
+  .ach-card{padding:24px 18px}
+  .ach-tag{font-size:.6rem;padding:4px 10px}
+  .ach-card h3{font-size:1.1rem}
+  .eks-card{padding:20px 16px}
+  .eks-stats{grid-template-columns:1fr;gap:12px}
+  .eks-stat-num{font-size:clamp(1.8rem,6vw,2.4rem)}
+  .eks-switch{gap:2px;padding:4px}
+  .eks-tab{padding:10px 10px;font-size:.8rem}
+  .eks-chip{padding:7px 12px;font-size:.78rem}
+  .gal-grid{gap:24px}
+  .gal-switch{gap:2px;padding:4px}
+  .gal-tab{padding:10px 8px;font-size:.8rem}
+  .gal-tab em{margin-left:6px}
+  .gal-btn{aspect-ratio:4/3}
+  .gal-ico{width:36px;height:36px}
+  .gal-ico svg{width:18px;height:18px}
+  .kampus-card{padding:28px 20px 24px}
+  .kampus-addr{font-size:.85rem}
+  .quote-card{padding:30px 20px 26px}
+  .blockquote{font-size:1.05rem}
+  #galLb .lb-nav{width:40px;height:40px;font-size:1.2rem}
+  #galLb .lb-prev{left:8px}
+  #galLb .lb-next{right:8px}
+  #galLb .lb-close{top:8px;right:8px;width:40px;height:40px}
+  #toTop{width:44px;height:44px;right:16px;bottom:16px}
+  .nav-link{font-size:1.3rem;padding:14px 20px}
+  .nav-link::after{width:28px}
 }
 
 /* ─────────────────── REDUCED MOTION ─────────────────── */
